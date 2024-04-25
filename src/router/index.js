@@ -1,5 +1,6 @@
 import { createRouter, createWebHistory } from 'vue-router';
 import Index from '../views/Index.vue';
+import CreateLeague from '../views/league/CreateLeague.vue';
 import NotFound from '../views/NotFound.vue';
 
 const routes = [
@@ -7,6 +8,14 @@ const routes = [
     path: '/',
     name: 'home',
     component: Index,
+    meta: { 
+      requiresAuth: false,
+    }
+  },
+  {
+    path: '/league/create',
+    name: 'createLeague',
+    component: CreateLeague,
     meta: { 
       requiresAuth: false,
     }
