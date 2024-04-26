@@ -1,6 +1,6 @@
 <template>
-    <div class="bg-white rounded-lg shadow-md dark:bg-gray-400 h-full">
-        <section class="w-full max-w-sm p-6 m-auto mx-auto bg-white rounded-lg shadow-md dark:bg-gray-800">
+    <div class="bg-white rounded-lg shadow-md dark:bg-gray-400 h-full min-h-screen pt-16">
+        <div class="w-full max-w-sm p-6 m-auto mx-auto bg-white rounded-lg shadow-md dark:bg-gray-800">
             <div class="max-w-3xl px-6 py-16 mx-auto text-center">
                 <h1 class="text-3xl font-semibold text-gray-800 dark:text-gray-100">Create New League</h1>
                 <p class="max-w-md mx-auto mt-5 text-gray-500 dark:text-gray-400">Create a new league for you and your
@@ -8,7 +8,7 @@
 
             </div>
 
-            <form @submit.prevent="createLeague" class="">
+            <form @submit.prevent="create" class="">
                 <div>
                     <label for="leagueName" class="block text-sm text-gray-800 dark:text-gray-200">League Name</label>
                     <input type="text" v-model="leagueDetails.name"
@@ -30,12 +30,14 @@
                     </button>
                 </div>
             </form>
-        </section>
+        </div>
     </div>
 </template>
 
 <script setup>
 import { ref } from 'vue';
+import { createLeague } from '../../composables/league';
+import {BASE_URL} from '../../config';
 
 const leagueDetails = ref(
     {
@@ -45,8 +47,15 @@ const leagueDetails = ref(
 );
 
 
-const createLeague = async () => {
+const create = async () => {
     console.log(leagueDetails.value);
+
+    await createLeague(leagueDetails.value);
+
+    leagueDetails.value = {
+        name: null,
+        description: null
+    };
 }
 
 </script>
