@@ -58,8 +58,8 @@ const loginDetails = ref({
 
 const attemptLogin = async () => {
 
-    // const response = await fetch(`${BASE_URL}/login?useCookies=true&useSessionCookies=true`, {
-    const response = await fetch(`${BASE_URL}/login`, {
+    const response = await fetch(`${BASE_URL}/login?useCookies=true&useSessionCookies=true`, {
+    // const response = await fetch(`${BASE_URL}/login`, {
         method: "POST",
         headers: {
             "Content-Type": "application/json",
@@ -67,11 +67,11 @@ const attemptLogin = async () => {
         body: JSON.stringify(loginDetails.value)
     });
 
-    const data = await response.json();
+    // const data = await response.json();
 
     if (response.status === 200) {
 
-        console.log(data);
+        // console.log(data);
         alert("login successful");
         loginDetails.value.email = "";
     }
