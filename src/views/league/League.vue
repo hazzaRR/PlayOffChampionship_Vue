@@ -37,15 +37,16 @@
 
 <script setup>
 import { BASE_URL } from '../../config';
+import { useRoute } from 'vue-router'
 import {getLeagueTable} from '../../composables/leaderboard';
 import {ref, onMounted} from 'vue';
 
 
-const leagueId = 1;
+const route = useRoute()
 const leagueTable = ref(null);
 
 onMounted(async () => {
-    leagueTable.value = await getLeagueTable(leagueId);
+    leagueTable.value = await getLeagueTable(route.params.id);
     console.log(leagueTable.value)
 });
 

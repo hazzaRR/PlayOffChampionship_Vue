@@ -31,7 +31,7 @@ const routes = [
     }
   },
   {
-    path: '/league/',
+    path: '/league/:id',
     name: 'Leagues',
     component: League,
     meta: { 
