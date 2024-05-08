@@ -3,7 +3,7 @@
 
         <div class="overflow-x-auto md:w-1/2 w-full mx-auto">
 
-<table v-if="!leagueTable" class="table md:table-md table-xs border-2 border-white my-12">
+<table v-if="leagueTable" class="table md:table-md table-xs border-2 border-white my-12">
   <thead>
     <tr>
       <th>#</th>
@@ -45,7 +45,8 @@ const leagueId = 1;
 const leagueTable = ref(null);
 
 onMounted(async () => {
-    leagueTable.value = await getLeagueTable();
+    leagueTable.value = await getLeagueTable(leagueId);
+    console.log(leagueTable.value)
 });
 
 
