@@ -51,7 +51,7 @@
       </form>
     </CardContent>
     <CardFooter class="flex justify-between px-6 pb-6">
-      <Button variant="outline">
+      <Button @click="cancel" variant="outline">
         Cancel
       </Button>
       <Button @click="create">Create</Button>
@@ -63,7 +63,6 @@
 <script setup>
 import { ref } from 'vue';
 import { createLeague } from '../../composables/league';
-import {BASE_URL} from '../../config';
 import {
   Card,
   CardContent,
@@ -76,6 +75,11 @@ import { Textarea } from '@/components/ui/textarea'
 import { Input } from '@/components/ui/input'
 import { Label } from '@/components/ui/label'
 import { Button } from '@/components/ui/button'
+import { useRouter } from 'vue-router'
+
+const router = useRouter();
+
+
 
 const leagueDetails = ref(
     {
@@ -94,6 +98,10 @@ const create = async () => {
         name: null,
         description: null
     };
+};
+
+const cancel = () => {
+    router.push("/");
 }
 
 </script>
