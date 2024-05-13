@@ -1,6 +1,6 @@
 <template>
     <div class="bg-white rounded-lg shadow-md dark:bg-gray-400 h-full min-h-screen pt-16">
-        <div class="w-full max-w-sm p-6 m-auto mx-auto bg-white rounded-lg shadow-md dark:bg-gray-800">
+        <!-- <div class="w-full max-w-sm p-6 m-auto mx-auto bg-white rounded-lg shadow-md dark:bg-gray-800">
             <div class="max-w-3xl px-6 py-16 mx-auto text-center">
                 <h1 class="text-3xl font-semibold text-gray-800 dark:text-gray-100">Create New League</h1>
                 <p class="max-w-md mx-auto mt-5 text-gray-500 dark:text-gray-400">Create a new league for you and your
@@ -30,14 +30,52 @@
                     </button>
                 </div>
             </form>
+        </div> -->
+        <Card class="w-[350px] mx-auto">
+            <CardHeader>
+                <CardTitle>Create League</CardTitle>
+                <CardDescription>Create a new virtual league</CardDescription>
+            </CardHeader>
+            <CardContent>
+                <form>
+                    <div class="grid items-center w-full gap-4">
+                        <div class="flex flex-col space-y-1.5">
+                            <Label for="name">Name</Label>
+            <Input  v-model="leagueDetails.name" id="name" placeholder="Name of your league" />
+          </div>
+          <div class="flex flex-col space-y-1.5">
+            <Label for="framework">Description</Label>
+            <Textarea v-model="leagueDetails.description" placeholder="Type the description of your league for others to see" />
+          </div>
         </div>
-    </div>
+      </form>
+    </CardContent>
+    <CardFooter class="flex justify-between px-6 pb-6">
+      <Button variant="outline">
+        Cancel
+      </Button>
+      <Button @click="create">Create</Button>
+    </CardFooter>
+</Card>
+</div>
 </template>
 
 <script setup>
 import { ref } from 'vue';
 import { createLeague } from '../../composables/league';
 import {BASE_URL} from '../../config';
+import {
+  Card,
+  CardContent,
+  CardDescription,
+  CardFooter,
+  CardHeader,
+  CardTitle,
+} from '@/components/ui/card'
+import { Textarea } from '@/components/ui/textarea'
+import { Input } from '@/components/ui/input'
+import { Label } from '@/components/ui/label'
+import { Button } from '@/components/ui/button'
 
 const leagueDetails = ref(
     {
