@@ -1,7 +1,7 @@
 <template>
   <div>
 
-    
+
     <div class="overflow-x-auto md:w-1/2 w-full mx-auto">
       <Dialog>
         <DialogTrigger as-child>
@@ -21,14 +21,48 @@
               <Label for="player1" class="text-right">
                 Player 1
               </Label>
-              <Input id="player1" class="col-span-3" />
+              <Popover v-model:open="openSelectPlayer1">
+                <PopoverTrigger as-child>
+                  <Button variant="outline" role="combobox" :aria-expanded="openSelectPlayer1" class="w-[200px] justify-between">
+                    {{ matchDetails.player1Id
+                ? leagueTable.find((row) => row.playerDto.name === matchDetails.player1Dto.name)?.playerDto.name
+                : "Select Player..." }}
+                    <ChevronsUpDown class="ml-2 h-4 w-4 shrink-0 opacity-50" />
+                  </Button>
+                </PopoverTrigger>
+                <PopoverContent class="w-[200px] p-0">
+                  <Command>
+                    <CommandInput class="h-9" placeholder="Select Player" />
+                    <CommandEmpty>No Players found.</CommandEmpty>
+                    <CommandList>
+                      <CommandGroup>
+                        <CommandItem v-for="row in leagueTable" :key="row.playerDto.name" :value="row.playerId"
+                          @select="(event) => {
+                            matchDetails.player1Id = event.detail.value;
+                            matchDetails.player1Dto = row.playerDto;
+                            openSelectPlayer1 = false
+                            }">
+                          {{ row.playerDto.name }}
+                          <Check :class="cn(
+                'ml-auto h-4 w-4',
+                matchDetails.player1Dto === row.playerDto ? 'opacity-100' : 'opacity-0',
+              )" />
+                        </CommandItem>
+                      </CommandGroup>
+                    </CommandList>
+                  </Command>
+                </PopoverContent>
+              </Popover>
             </div>
+
+
             <div class="grid grid-cols-4 items-center gap-4">
               <Label for="player2" class="text-right">
                 Player 2
               </Label>
-              <Input id="player2" class="col-span-3" />
             </div>
+
+
           </div>
           <DialogFooter>
             <Button type="submit">
@@ -100,6 +134,8 @@
         </TableBody>
       </Table>
     </div>
+
+    <p>{{ matchDetails }}</p>
   </div>
 </template>
 
@@ -110,6 +146,8 @@ import { getLeagueTable } from '@/composables/leaderboard';
 import { getLeagueMatchHistory } from '@/composables/matches';
 import { ref, onMounted } from 'vue';
 
+import { Check, ChevronsUpDown } from 'lucide-vue-next'
+import { cn } from '@/lib/utils'
 import {
   Table,
   TableBody,
@@ -134,6 +172,38 @@ import {
 
 import { Input } from '@/components/ui/input'
 import { Label } from '@/components/ui/label'
+
+import {
+  Command,
+  CommandEmpty,
+  CommandGroup,
+  CommandInput,
+  CommandItem,
+  CommandList,
+} from '@/components/ui/command'
+import {
+  Popover,
+  PopoverContent,
+  PopoverTrigger,
+} from '@/components/ui/popover'
+
+const frameworks = [
+  { value: 'next.js', label: 'Next.js' },
+  { value: 'sveltekit', label: 'SvelteKit' },
+  { value: 'nuxt.js', label: 'Nuxt.js' },
+  { value: 'remix', label: 'Remix' },
+  { value: 'astro', label: 'Astro' },
+]
+
+const openSelectPlayer1 = ref(false)
+const matchDetails = ref({
+  player1Id: null,
+  player1Dto: null,
+  player1Score: null,
+  player2Id: null,
+  player2Dto: null,
+  player2Score: null
+})
 
 
 const route = useRoute();
