@@ -55,6 +55,13 @@
               </Popover>
             </div>
 
+            <div class="grid grid-cols-4 items-center gap-4">
+              <Label for="player1" class="text-right">
+                Goals
+              </Label>
+                <Input v-model="matchDetails.player1Score"  type="number" placeholder="0" />
+            </div>
+
 
             <div class="grid grid-cols-4 items-center gap-4">
               <Label for="player2" class="text-right">
@@ -93,6 +100,13 @@
                   </Command>
                 </PopoverContent>
               </Popover>
+            </div>
+
+            <div class="grid grid-cols-4 items-center gap-4">
+              <Label for="player2" class="text-right">
+                Goals
+              </Label>
+                <Input v-model="matchDetails.player2Score" type="number" placeholder="0" />
             </div>
 
 
@@ -233,10 +247,10 @@ const openSelectPlayer2 = ref(false);
 const matchDetails = ref({
   player1Id: null,
   player1Dto: null,
-  player1Score: null,
+  player1Score: 0,
   player2Id: null,
   player2Dto: null,
-  player2Score: null
+  player2Score: 0
 })
 
 
