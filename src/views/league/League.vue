@@ -37,8 +37,8 @@
                     <CommandEmpty>No Players found.</CommandEmpty>
                     <CommandList>
                       <CommandGroup>
-                        <CommandItem v-for="row in leagueTable" :key="row.playerDto.name" :value="row.playerId" @select="(event) => {
-                matchDetails.player1Id = event.detail.value;
+                        <CommandItem v-for="row in leagueTable" :key="row.playerDto.name" :value="row.playerDto.name" @select="(event) => {
+                matchDetails.player1Id = row.playerId;
                 matchDetails.player1Dto = row.playerDto;
                 openSelectPlayer1 = false
               }">
@@ -84,8 +84,8 @@
                     <CommandEmpty>No Players found.</CommandEmpty>
                     <CommandList>
                       <CommandGroup>
-                        <CommandItem v-for="row in leagueTable" :key="row.playerDto.name" :value="row.playerId" @select="(event) => {
-                matchDetails.player2Id = event.detail.value;
+                        <CommandItem v-for="row in leagueTable" :key="row.playerDto.name" :value="row.playerDto.name" @select="(event) => {
+                matchDetails.player2Id = row.playerId;
                 matchDetails.player2Dto = row.playerDto;
                 openSelectPlayer2 = false
               }">
@@ -259,7 +259,6 @@ const leagueTable = ref(null);
 
 onMounted(async () => {
   leagueTable.value = await getLeagueTable(route.params.id);
-  console.log(leagueTable.value)
 });
 
 
