@@ -23,7 +23,8 @@
               </Label>
               <Popover v-model:open="openSelectPlayer1">
                 <PopoverTrigger as-child>
-                  <Button variant="outline" role="combobox" :aria-expanded="openSelectPlayer1" class="w-[200px] justify-between">
+                  <Button variant="outline" role="combobox" :aria-expanded="openSelectPlayer1"
+                    class="w-[200px] justify-between">
                     {{ matchDetails.player1Id
                 ? leagueTable.find((row) => row.playerDto.name === matchDetails.player1Dto.name)?.playerDto.name
                 : "Select Player..." }}
@@ -36,12 +37,11 @@
                     <CommandEmpty>No Players found.</CommandEmpty>
                     <CommandList>
                       <CommandGroup>
-                        <CommandItem v-for="row in leagueTable" :key="row.playerDto.name" :value="row.playerId"
-                          @select="(event) => {
-                            matchDetails.player1Id = event.detail.value;
-                            matchDetails.player1Dto = row.playerDto;
-                            openSelectPlayer1 = false
-                            }">
+                        <CommandItem v-for="row in leagueTable" :key="row.playerDto.name" :value="row.playerId" @select="(event) => {
+                matchDetails.player1Id = event.detail.value;
+                matchDetails.player1Dto = row.playerDto;
+                openSelectPlayer1 = false
+              }">
                           {{ row.playerDto.name }}
                           <Check :class="cn(
                 'ml-auto h-4 w-4',
@@ -60,6 +60,39 @@
               <Label for="player2" class="text-right">
                 Player 2
               </Label>
+
+              <Popover v-model:open="openSelectPlayer2">
+                <PopoverTrigger as-child>
+                  <Button variant="outline" role="combobox" :aria-expanded="openSelectPlayer2"
+                    class="w-[200px] justify-between">
+                    {{ matchDetails.player2Id
+                ? leagueTable.find((row) => row.playerDto.name === matchDetails.player2Dto.name)?.playerDto.name
+                : "Select Player..." }}
+                    <ChevronsUpDown class="ml-2 h-4 w-4 shrink-0 opacity-50" />
+                  </Button>
+                </PopoverTrigger>
+                <PopoverContent class="w-[200px] p-0">
+                  <Command>
+                    <CommandInput class="h-9" placeholder="Select Player" />
+                    <CommandEmpty>No Players found.</CommandEmpty>
+                    <CommandList>
+                      <CommandGroup>
+                        <CommandItem v-for="row in leagueTable" :key="row.playerDto.name" :value="row.playerId" @select="(event) => {
+                matchDetails.player2Id = event.detail.value;
+                matchDetails.player2Dto = row.playerDto;
+                openSelectPlayer2 = false
+              }">
+                          {{ row.playerDto.name }}
+                          <Check :class="cn(
+                'ml-auto h-4 w-4',
+                matchDetails.player2Dto === row.playerDto ? 'opacity-100' : 'opacity-0',
+              )" />
+                        </CommandItem>
+                      </CommandGroup>
+                    </CommandList>
+                  </Command>
+                </PopoverContent>
+              </Popover>
             </div>
 
 
@@ -195,7 +228,8 @@ const frameworks = [
   { value: 'astro', label: 'Astro' },
 ]
 
-const openSelectPlayer1 = ref(false)
+const openSelectPlayer1 = ref(false);
+const openSelectPlayer2 = ref(false);
 const matchDetails = ref({
   player1Id: null,
   player1Dto: null,
