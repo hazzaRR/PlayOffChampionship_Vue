@@ -55,3 +55,25 @@ export const addMatchResult = async (matchDetails, leagueId) => {
     }
 
 }
+
+export const deleteMatchResult = async (matchId) => {
+
+    const response = await fetch(`${BASE_URL}/api/match/${matchId}`, {
+        method: "DELETE",
+        headers: { 
+            "Content-Type": "application/json",
+        }
+    });
+
+
+    if (response.status === 204 || response.status === 200) {
+        
+        return true;
+    }
+
+    return false;
+
+
+
+
+}

@@ -3,7 +3,39 @@
 
 
     <div class="overflow-x-auto md:w-1/2 w-full mx-auto">
-      <Dialog>
+      
+      
+      <Table v-if="leagueTable">
+        <TableCaption>League Table Name</TableCaption>
+        <TableHeader>
+          <TableRow>
+            <TableHead class="w-[100px]">
+              Position
+            </TableHead>
+            <TableHead>Player</TableHead>
+            <TableHead>Matches Played</TableHead>
+            <TableHead>Wins</TableHead>
+            <TableHead>Losses</TableHead>
+            <TableHead class="text-right">Points</TableHead>
+          </TableRow>
+        </TableHeader>
+        <TableBody>
+          <TableRow v-for="(leagueRow, index) in leagueTable" :key="leagueRow.id">
+            <TableCell class="font-medium">
+              {{ index + 1 }}
+            </TableCell>
+            <TableCell>{{ leagueRow.playerDto.name }}</TableCell>
+            <TableCell>{{ leagueRow.totalMatches }}</TableCell>
+            <TableCell>{{ leagueRow.totalWins }}</TableCell>
+            <TableCell>{{ leagueRow.totalMatches - leagueRow.totalWins }}</TableCell>
+            <TableCell class="text-right">
+              {{ leagueRow.points }}
+            </TableCell>
+          </TableRow>
+        </TableBody>
+      </Table>
+      
+      <Dialog class="">
         <DialogTrigger as-child>
           <Button variant="outline">
             Add Match
@@ -121,38 +153,6 @@
         </DialogContent>
       </Dialog>
 
-
-      <Table v-if="leagueTable">
-        <TableCaption>League Table Name</TableCaption>
-        <TableHeader>
-          <TableRow>
-            <TableHead class="w-[100px]">
-              Position
-            </TableHead>
-            <TableHead>Player</TableHead>
-            <TableHead>Matches Played</TableHead>
-            <TableHead>Wins</TableHead>
-            <TableHead>Losses</TableHead>
-            <TableHead class="text-right">Points</TableHead>
-          </TableRow>
-        </TableHeader>
-        <TableBody>
-          <TableRow v-for="(leagueRow, index) in leagueTable" :key="leagueRow.id">
-            <TableCell class="font-medium">
-              {{ index + 1 }}
-            </TableCell>
-            <TableCell>{{ leagueRow.playerDto.name }}</TableCell>
-            <TableCell>{{ leagueRow.totalMatches }}</TableCell>
-            <TableCell>{{ leagueRow.totalWins }}</TableCell>
-            <TableCell>{{ leagueRow.totalMatches - leagueRow.totalWins }}</TableCell>
-            <TableCell class="text-right">
-              {{ leagueRow.points }}
-            </TableCell>
-          </TableRow>
-        </TableBody>
-      </Table>
-
-
       <Table v-if="matchHistory">
         <TableCaption>League Match history</TableCaption>
         <TableHeader>
@@ -170,6 +170,10 @@
             <TableCell >{{ match.player1.name }}</TableCell>
             <TableCell >{{ match.player2.name }}</TableCell>
             <TableCell>{{ match.player1Score }} - {{ match.player2Score }}</TableCell>
+            <TableCell class="font-medium" >{{ match.winner.name }}</TableCell>
+            <TableCell>
+              <Trash2 class="hover:bg-slate-600 hover:bg-opacity-25 m-2 rounded-md text-red-600" @click="deleteMatch(match.id) "/>
+            </TableCell>
           </TableRow>
         </TableBody>
       </Table>
@@ -180,7 +184,7 @@
 <script setup>
 import { useRoute } from 'vue-router'
 import { getLeagueTable } from '@/composables/leaderboard';
-import { getLeagueMatchHistory, addMatchResult } from '@/composables/matches';
+import { getLeagueMatchHistory, addMatchResult, deleteMatchResult } from '@/composables/matches';
 import { ref, onMounted } from 'vue';
 
 import { Check, ChevronsUpDown, Trash2 } from 'lucide-vue-next'
@@ -245,7 +249,6 @@ const matchHistory = ref(null);
 onMounted(async () => {
   leagueTable.value = await getLeagueTable(route.params.id);
   matchHistory.value = await getLeagueMatchHistory(route.params.id);
-  console.log(matchHistory.value)
 });
 
 
@@ -265,6 +268,18 @@ const addMatchBtn = async () => {
   }
 };
 
+
+const deleteMatch = async (matchId) => {
+
+  console.log(matchId)
+
+  const response = await deleteMatchResult(matchId);
+
+  if (response) {
+    location.reload();
+  }
+
+};
 
 
 
