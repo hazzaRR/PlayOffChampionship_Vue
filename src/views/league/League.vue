@@ -1,12 +1,17 @@
 <template>
   <div>
 
+    <Toaster />
+
 
     <div class="overflow-x-auto md:w-1/2 w-full mx-auto">
+      <h1 v-if="leagueTable" class="font-bold text-2xl text-center mt-6">{{ leagueTable[0].leagueDto.name }}</h1>
+      <h2 v-if="leagueTable" class="font-mediym text-lg text-center">{{ leagueTable[0].leagueDto.description }}</h2>
+
       
       
-      <Table v-if="leagueTable">
-        <TableCaption>League Table Name</TableCaption>
+      <Table v-if="leagueTable" class="mb-16 mt-10">
+        <TableCaption>League Table</TableCaption>
         <TableHeader>
           <TableRow>
             <TableHead class="w-[100px]">
@@ -36,11 +41,13 @@
       </Table>
       
       <Dialog class="">
-        <DialogTrigger as-child>
-          <Button variant="outline">
+        <div class="flex justify-end">
+        <DialogTrigger as-child class="flex justify-end">
+          <Button variant="outline" class="bg-blue-500 justify-end">
             Add Match
           </Button>
         </DialogTrigger>
+        </div>
         <DialogContent class="sm:max-w-[425px]">
           <DialogHeader>
             <DialogTitle>Add match</DialogTitle>
@@ -159,17 +166,17 @@
           <TableRow>
             <TableHead>Match Date</TableHead>
             <TableHead>Player 1</TableHead>
-            <TableHead>Player 2</TableHead>
             <TableHead>Score</TableHead>
+            <TableHead>Player 2</TableHead>
             <TableHead>Winner</TableHead>
           </TableRow>
         </TableHeader>
         <TableBody>
           <TableRow v-for="(match) in matchHistory" :key="match.id">
-            <TableCell>{{ match.matchDate }}</TableCell>
+            <TableCell>{{ new Date(match.matchDate).toLocaleDateString() }}</TableCell>
             <TableCell >{{ match.player1.name }}</TableCell>
-            <TableCell >{{ match.player2.name }}</TableCell>
             <TableCell>{{ match.player1Score }} - {{ match.player2Score }}</TableCell>
+            <TableCell >{{ match.player2.name }}</TableCell>
             <TableCell class="font-medium" >{{ match.winner.name }}</TableCell>
             <TableCell>
               <Trash2 class="hover:bg-slate-600 hover:bg-opacity-25 m-2 rounded-md text-red-600" @click="deleteMatch(match.id) "/>
@@ -230,6 +237,11 @@ import {
 } from '@/components/ui/popover'
 
 
+import { useToast } from '@/components/ui/toast/use-toast'
+import { Toaster } from '@/components/ui/toast'
+
+const { toast } = useToast()
+
 const openSelectPlayer1 = ref(false);
 const openSelectPlayer2 = ref(false);
 const matchDetails = ref({
@@ -248,6 +260,7 @@ const matchHistory = ref(null);
 
 onMounted(async () => {
   leagueTable.value = await getLeagueTable(route.params.id);
+  console.log(leagueTable.value)
   matchHistory.value = await getLeagueMatchHistory(route.params.id);
 });
 
@@ -265,6 +278,14 @@ const addMatchBtn = async () => {
       player2Dto: null,
       player2Score: 0
     }
+
+    toast({
+        title: "New Match Record",
+        description: 'New Match result has been added',
+      });
+
+      leagueTable.value = await getLeagueTable(route.params.id);
+      matchHistory.value = await getLeagueMatchHistory(route.params.id);
   }
 };
 
@@ -276,7 +297,14 @@ const deleteMatch = async (matchId) => {
   const response = await deleteMatchResult(matchId);
 
   if (response) {
-    location.reload();
+    toast({
+        title: "Match deleted",
+        description: `Match result with the id ${matchId} was deleted`,
+      });
+
+      leagueTable.value = await getLeagueTable(route.params.id);
+      matchHistory.value = await getLeagueMatchHistory(route.params.id);
+
   }
 
 };
