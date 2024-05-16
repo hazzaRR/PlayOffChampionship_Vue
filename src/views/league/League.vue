@@ -112,15 +112,17 @@
 
           </div>
           <DialogFooter>
-            <Button type="submit">
+            <DialogClose as-child>
+            <Button @click="addMatchBtn" type="submit">
               Create
             </Button>
+          </DialogClose>
           </DialogFooter>
         </DialogContent>
       </Dialog>
 
 
-      <Table>
+      <Table v-if="leagueTable">
         <TableCaption>League Table Name</TableCaption>
         <TableHeader>
           <TableRow>
@@ -151,49 +153,37 @@
       </Table>
 
 
-      <Table>
+      <Table v-if="matchHistory">
         <TableCaption>League Match history</TableCaption>
         <TableHeader>
           <TableRow>
-            <TableHead class="w-[100px]">
-              Player 1
-            </TableHead>
-            <TableHead>Player</TableHead>
-            <TableHead>Matches Played</TableHead>
-            <TableHead>Wins</TableHead>
-            <TableHead>Losses</TableHead>
-            <TableHead class="text-right">Points</TableHead>
+            <TableHead>Match Date</TableHead>
+            <TableHead>Player 1</TableHead>
+            <TableHead>Player 2</TableHead>
+            <TableHead>Score</TableHead>
+            <TableHead>Winner</TableHead>
           </TableRow>
         </TableHeader>
         <TableBody>
-          <TableRow v-for="(leagueRow, index) in leagueTable" :key="leagueRow.id">
-            <TableCell class="font-medium">
-              {{ index + 1 }}
-            </TableCell>
-            <TableCell>{{ leagueRow.playerDto.name }}</TableCell>
-            <TableCell>{{ leagueRow.totalMatches }}</TableCell>
-            <TableCell>{{ leagueRow.totalWins }}</TableCell>
-            <TableCell>{{ leagueRow.totalMatches - leagueRow.totalWins }}</TableCell>
-            <TableCell class="text-right">
-              {{ leagueRow.points }}
-            </TableCell>
+          <TableRow v-for="(match) in matchHistory" :key="match.id">
+            <TableCell>{{ match.matchDate }}</TableCell>
+            <TableCell >{{ match.player1.name }}</TableCell>
+            <TableCell >{{ match.player2.name }}</TableCell>
+            <TableCell>{{ match.player1Score }} - {{ match.player2Score }}</TableCell>
           </TableRow>
         </TableBody>
       </Table>
     </div>
-
-    <p>{{ matchDetails }}</p>
   </div>
 </template>
 
 <script setup>
-import { BASE_URL } from '@/config'
 import { useRoute } from 'vue-router'
 import { getLeagueTable } from '@/composables/leaderboard';
-import { getLeagueMatchHistory } from '@/composables/matches';
+import { getLeagueMatchHistory, addMatchResult } from '@/composables/matches';
 import { ref, onMounted } from 'vue';
 
-import { Check, ChevronsUpDown } from 'lucide-vue-next'
+import { Check, ChevronsUpDown, Trash2 } from 'lucide-vue-next'
 import { cn } from '@/lib/utils'
 import {
   Table,
@@ -210,6 +200,7 @@ import { Button } from '@/components/ui/button'
 import {
   Dialog,
   DialogContent,
+  DialogClose,
   DialogDescription,
   DialogFooter,
   DialogHeader,
@@ -234,13 +225,6 @@ import {
   PopoverTrigger,
 } from '@/components/ui/popover'
 
-const frameworks = [
-  { value: 'next.js', label: 'Next.js' },
-  { value: 'sveltekit', label: 'SvelteKit' },
-  { value: 'nuxt.js', label: 'Nuxt.js' },
-  { value: 'remix', label: 'Remix' },
-  { value: 'astro', label: 'Astro' },
-]
 
 const openSelectPlayer1 = ref(false);
 const openSelectPlayer2 = ref(false);
@@ -256,10 +240,30 @@ const matchDetails = ref({
 
 const route = useRoute();
 const leagueTable = ref(null);
+const matchHistory = ref(null);
 
 onMounted(async () => {
   leagueTable.value = await getLeagueTable(route.params.id);
+  matchHistory.value = await getLeagueMatchHistory(route.params.id);
+  console.log(matchHistory.value)
 });
+
+
+const addMatchBtn = async () => {
+
+  const response = await addMatchResult(matchDetails.value, route.params.id);
+
+  if (response) {
+    matchDetails.value = {
+      player1Id: null,
+      player1Dto: null,
+      player1Score: 0,
+      player2Id: null,
+      player2Dto: null,
+      player2Score: 0
+    }
+  }
+};
 
 
 
