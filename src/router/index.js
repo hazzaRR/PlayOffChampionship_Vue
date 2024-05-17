@@ -2,6 +2,7 @@ import { createRouter, createWebHistory } from 'vue-router';
 import Index from '../views/Index.vue';
 import CreateLeague from '../views/league/CreateLeague.vue';
 import League from '../views/league/League.vue';
+import LeagueIndex from '../views/league/Index.vue';
 import NotFound from '../views/NotFound.vue';
 import Login from '../views/auth/Login.vue';
 
@@ -31,8 +32,16 @@ const routes = [
     }
   },
   {
-    path: '/league/:id',
+    path: '/league/',
     name: 'Leagues',
+    component: LeagueIndex,
+    meta: { 
+      requiresAuth: false,
+    }
+  },
+  {
+    path: '/league/:id',
+    name: 'LeagueDetails',
     component: League,
     meta: { 
       requiresAuth: false,

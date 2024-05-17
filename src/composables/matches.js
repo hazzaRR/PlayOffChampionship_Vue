@@ -24,13 +24,12 @@ export const getLeagueMatchHistory = async (leagueId) => {
 
 export const addMatchResult = async (matchDetails, leagueId) => {
 
-
     let matchDto = {
-        player1Id: matchDetails.player1Id,
-        player2Id: matchDetails.player2Id,
+        player1Id: matchDetails.player1Dto.id,
+        player2Id: matchDetails.player2Dto.id,
         player1Score: matchDetails.player1Score,
         player2Score: matchDetails.player2Score,
-        winnerId: matchDetails.player1Score > matchDetails.player2Score ? matchDetails.player1Id : matchDetails.player2Id,
+        winnerId: matchDetails.player1Score > matchDetails.player2Score ? matchDetails.player1Dto.id : matchDetails.player2Dto.id,
         leagueId: leagueId,
         matchDate: new Date().toISOString()
     }

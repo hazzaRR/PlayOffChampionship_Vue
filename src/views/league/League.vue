@@ -64,7 +64,7 @@
                 <PopoverTrigger as-child>
                   <Button variant="outline" role="combobox" :aria-expanded="openSelectPlayer1"
                     class="w-[200px] justify-between">
-                    {{ matchDetails.player1Id
+                    {{ matchDetails.player1Dto
                 ? leagueTable.find((row) => row.playerDto.name === matchDetails.player1Dto.name)?.playerDto.name
                 : "Select Player..." }}
                     <ChevronsUpDown class="ml-2 h-4 w-4 shrink-0 opacity-50" />
@@ -77,7 +77,6 @@
                     <CommandList>
                       <CommandGroup>
                         <CommandItem v-for="row in leagueTable" :key="row.playerDto.name" :value="row.playerDto.name" @select="(event) => {
-                matchDetails.player1Id = row.playerId;
                 matchDetails.player1Dto = row.playerDto;
                 openSelectPlayer1 = false
               }">
@@ -111,7 +110,7 @@
                 <PopoverTrigger as-child>
                   <Button variant="outline" role="combobox" :aria-expanded="openSelectPlayer2"
                     class="w-[200px] justify-between">
-                    {{ matchDetails.player2Id
+                    {{ matchDetails.player2Dto
                 ? leagueTable.find((row) => row.playerDto.name === matchDetails.player2Dto.name)?.playerDto.name
                 : "Select Player..." }}
                     <ChevronsUpDown class="ml-2 h-4 w-4 shrink-0 opacity-50" />
@@ -124,7 +123,6 @@
                     <CommandList>
                       <CommandGroup>
                         <CommandItem v-for="row in leagueTable" :key="row.playerDto.name" :value="row.playerDto.name" @select="(event) => {
-                matchDetails.player2Id = row.playerId;
                 matchDetails.player2Dto = row.playerDto;
                 openSelectPlayer2 = false
               }">
@@ -245,10 +243,8 @@ const { toast } = useToast()
 const openSelectPlayer1 = ref(false);
 const openSelectPlayer2 = ref(false);
 const matchDetails = ref({
-  player1Id: null,
   player1Dto: null,
   player1Score: 0,
-  player2Id: null,
   player2Dto: null,
   player2Score: 0
 })
@@ -271,10 +267,8 @@ const addMatchBtn = async () => {
 
   if (response) {
     matchDetails.value = {
-      player1Id: null,
       player1Dto: null,
       player1Score: 0,
-      player2Id: null,
       player2Dto: null,
       player2Score: 0
     }
