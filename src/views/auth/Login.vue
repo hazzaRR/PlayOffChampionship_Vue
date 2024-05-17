@@ -61,6 +61,7 @@ const attemptLogin = async () => {
     const response = await fetch(`${BASE_URL}/login?useCookies=true&useSessionCookies=true`, {
     // const response = await fetch(`${BASE_URL}/login`, {
         method: "POST",
+        credentials: 'include',
         headers: {
             "Content-Type": "application/json",
         },

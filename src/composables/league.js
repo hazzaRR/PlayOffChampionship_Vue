@@ -22,3 +22,26 @@ export const createLeague = async (leagueDetails) => {
     }
 
 };
+
+export const getMyLeagues = async () => {
+
+    const response = await fetch(`${BASE_URL}/api/player-league`, {
+        method: "GET",
+        credentials: "include",
+        headers: { 
+            "Content-Type": "application/json",
+        },
+    });
+
+    const data = await response.json();
+
+    if (response.status === 200) {
+        
+        return data;
+    }
+
+    else {
+        return null;
+    }
+
+}
