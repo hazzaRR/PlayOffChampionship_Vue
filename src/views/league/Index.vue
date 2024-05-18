@@ -4,7 +4,12 @@
         <div class="overflow-x-auto md:w-1/2 w-full mx-auto">
 
             
-            <p>This is a page for just the leagues</p>
+            <h1 class="text-2xl font-bold">My Leagues</h1>
+            
+
+            <Button @click="() => router.push(`/league/find`)" variant="outline" class="bg-blue-500 justify-end">
+            Find new League
+            </Button>
             
             
             <Table class="mb-16 mt-10">
@@ -18,10 +23,7 @@
             </TableRow>
         </TableHeader>
         <TableBody>
-            <TableRow v-for="(leagueRow, index) in leagues" :key="leagueRow.id">
-                <TableCell class="font-medium">
-                    {{ index + 1 }}
-                </TableCell>
+            <TableRow @click="viewLeagueDetails(leagueRow.id)" v-for="(leagueRow) in leagues" :key="leagueRow.id" class="cursor-pointer">
                 <TableCell>{{ leagueRow.name }}</TableCell>
                 <TableCell>{{ leagueRow.description }}</TableCell>
             </TableRow>
@@ -34,9 +36,9 @@
 </template>
 
 <script setup>
-
 import {ref, onMounted} from 'vue';
 import {getMyLeagues} from '@/composables/league'
+import { useRouter } from 'vue-router'
 import { Check, ChevronsUpDown, Trash2 } from 'lucide-vue-next'
 import { cn } from '@/lib/utils'
 import {
@@ -49,7 +51,9 @@ import {
   TableRow,
 } from '@/components/ui/table'
 
+import { Button } from '@/components/ui/button'
 
+const router = useRouter();
 const leagues = ref(null);
 
 onMounted(async () => {
@@ -57,6 +61,10 @@ onMounted(async () => {
     console.log(leagues.value)
 });
 
+
+const viewLeagueDetails = (leagueId) => {
+    router.push(`/league/${leagueId}`);
+}
 
 
 </script>
