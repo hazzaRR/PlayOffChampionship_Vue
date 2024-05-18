@@ -50,6 +50,10 @@
 import { BASE_URL } from '../../config';
 import { ref } from 'vue';
 
+import { useRouter } from 'vue-router';
+
+const router = useRouter();
+
 const loginDetails = ref({
     email: "",
     password: ""
@@ -75,6 +79,7 @@ const attemptLogin = async () => {
         // console.log(data);
         alert("login successful");
         loginDetails.value.email = "";
+        router.push("/")
     }
 
     else {

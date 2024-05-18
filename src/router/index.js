@@ -3,6 +3,7 @@ import Index from '../views/Index.vue';
 import CreateLeague from '../views/league/CreateLeague.vue';
 import League from '../views/league/League.vue';
 import LeagueIndex from '../views/league/Index.vue';
+import LeagueFinder from '../views/league/Find.vue';
 import NotFound from '../views/NotFound.vue';
 import Login from '../views/auth/Login.vue';
 
@@ -35,6 +36,14 @@ const routes = [
     path: '/league/',
     name: 'Leagues',
     component: LeagueIndex,
+    meta: { 
+      requiresAuth: false,
+    }
+  },
+  {
+    path: '/league/find',
+    name: 'LeagueFinder',
+    component: LeagueFinder,
     meta: { 
       requiresAuth: false,
     }
