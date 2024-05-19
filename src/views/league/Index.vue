@@ -1,15 +1,17 @@
 <template>
     <div>
 
-        <div class="overflow-x-auto md:w-1/2 w-full mx-auto">
+        <div class="overflow-x-auto md:w-1/2 w-full mx-auto my-6">
 
             
-            <h1 class="text-2xl font-bold">My Leagues</h1>
+            <h1 class="text-2xl font-bold text-center">My Leagues</h1>
             
 
-            <Button @click="() => router.push(`/league/find`)" variant="outline" class="bg-blue-500 justify-end">
-            Find new League
-            </Button>
+            <div class="flex justify-end">
+                <Button @click="() => router.push(`/league/find`)" variant="outline" class="bg-blue-500 mt-2">
+                    Find new League
+                </Button>
+            </div>
             
             
             <Table class="mb-16 mt-10">
